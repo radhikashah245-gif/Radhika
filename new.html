@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#100e1d">
+    <title>what i couldn't say</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", Arial, sans-serif;
+            line-height: 1.7;
+            background: #100e1d;
+            color: #f3edf7;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+            margin: 0;
+            padding: clamp(24px, 6vw, 72px) 16px;
+            background:
+                radial-gradient(ellipse at 18% 15%, rgba(116, 72, 143, 0.24), transparent 42%),
+                radial-gradient(ellipse at 82% 78%, rgba(42, 91, 126, 0.2), transparent 46%),
+                linear-gradient(135deg, #100e1d, #171322 55%, #0d1420);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .tiny-hearts {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.04), transparent 55%);
+        }
+
+        .tiny-hearts span {
+            position: absolute;
+            font-size: clamp(0.8rem, 1.5vw, 1.4rem);
+            color: rgba(255, 94, 122, 0.9);
+            text-shadow: 0 0 12px rgba(255, 120, 141, 0.7);
+            opacity: 0;
+            animation: float-heart var(--dur, 12s) linear infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .tiny-hearts span::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 60%);
+            opacity: 0.6;
+            animation: shimmer 2.4s ease-in-out infinite;
+        }
+
+        @keyframes float-heart {
+            0% {
+                transform: translate3d(0, 0, 0) scale(0.7) rotate(0deg);
+                opacity: 0;
+            }
+            12% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate3d(var(--drift, 24px), -120vh, 0) scale(1.2) rotate(18deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                transform: scale(0.8);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            width: min(100%, 680px);
+            margin: 0 auto;
+            padding: clamp(24px, 6vw, 48px);
+            border: 1px solid rgba(252, 153, 191, 0.85);
+            border-radius: 24px;
+            background: rgba(21, 18, 33, 0.82);
+            box-shadow: 0 0 0 1px rgba(244, 199, 217, 0.18), 0 0 30px rgba(255, 155, 190, 0.2), 0 24px 80px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        h1 {
+            margin: 0 0 28px;
+            color: #f4c7d9;
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            text-shadow: 0 0 18px rgba(255, 177, 211, 0.45);
+        }
+
+        h2 {
+            margin: 32px 0 12px;
+            color: #f1c7d8;
+            font-size: 1.45rem;
+            text-shadow: 0 0 18px rgba(255, 177, 211, 0.45);
+        }
+
+        p {
+            margin: 0 0 18px;
+            color: #e4dfea;
+        }
+
+        .birthday {
+            min-height: 8em;
+        }
+
+        .please-understand {
+            color: #d7b6e8;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .closing {
+            margin-top: 28px;
+            color: #f0d7b7;
+            text-align: center;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        button {
+            min-height: 44px;
+            padding: 10px 18px;
+            border: 1px solid rgba(244, 199, 217, 0.8);
+            border-radius: 999px;
+            background: #6f456f;
+            color: #fff;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 160ms ease, transform 160ms ease;
+        }
+
+        button:hover {
+            background: #84558a;
+            transform: translateY(-1px);
+        }
+
+        button:focus-visible {
+            outline: 3px solid #f4c7d9;
+            outline-offset: 3px;
+        }
+
+        button.secondary {
+            background: transparent;
+        }
+
+        button.secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .memory-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 10px 20px;
+            border: 1px solid rgba(255, 190, 211, 0.9);
+            border-radius: 999px;
+            background: linear-gradient(135deg, #a8325a, #6f456f);
+            box-shadow: 0 0 18px rgba(255, 90, 137, 0.3);
+            color: #fff;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 160ms ease, box-shadow 160ms ease;
+        }
+
+        .memory-link.alt {
+            background: linear-gradient(135deg, #6f456f, #3d7bb6);
+            box-shadow: 0 0 18px rgba(93, 122, 255, 0.3);
+        }
+
+        .memory-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 26px rgba(255, 90, 137, 0.5);
+        }
+
+        .memory-link:focus-visible {
+            outline: 3px solid #f4c7d9;
+            outline-offset: 3px;
+        }
+
+        @keyframes slow-reveal {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        main > h1,
+        .intro-copy,
+        .intro-plea,
+        .birthday-intro h2,
+        .birthday-intro #birthday-wish p,
+        .closing-copy,
+        .closing,
+        .actions {
+            opacity: 0;
+            animation: slow-reveal 1.4s ease forwards;
+        }
+
+        main > h1 {
+            animation-delay: 0.2s;
+        }
+
+        .intro-copy {
+            animation-delay: 0.9s;
+        }
+
+        .intro-plea {
+            animation-delay: 1.7s;
+        }
+
+        .birthday-intro h2 {
+            animation-delay: 2.6s;
+        }
+
+        .birthday-intro #birthday-wish p:first-child {
+            animation-delay: 3.2s;
+        }
+
+        .birthday-intro #birthday-wish p:last-child {
+            animation-delay: 3.8s;
+        }
+
+        .closing-copy {
+            animation-delay: 6s;
+        }
+
+        .closing {
+            animation-delay: 6.6s;
+        }
+
+        .actions {
+            animation-delay: 7.2s;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            main > h1,
+            .intro-copy,
+            .intro-plea,
+            .birthday-intro h2,
+            .birthday-intro #birthday-wish p,
+            .closing-copy,
+            .closing,
+            .actions {
+                opacity: 1;
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tiny-hearts" aria-hidden="true">
+        <span style="left: 2%; top: 6%; --drift: -18px; --dur: 13s; --delay: 0s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 8%; top: 26%; --drift: 22px; --dur: 15s; --delay: 1.2s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 12%; top: 48%; --drift: -14px; --dur: 14s; --delay: 2.6s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 16%; top: 78%; --drift: 18px; --dur: 18s; --delay: 0.8s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 22%; top: 10%; --drift: -12px; --dur: 12s; --delay: 2.1s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 26%; top: 40%; --drift: 26px; --dur: 17s; --delay: 1.7s; color: rgba(255, 94, 122, 0.85);">❤</span>
+        <span style="left: 30%; top: 74%; --drift: -10px; --dur: 16s; --delay: 3.1s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 36%; top: 18%; --drift: 20px; --dur: 15s; --delay: 2.8s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 40%; top: 54%; --drift: -18px; --dur: 13s; --delay: 0.6s; color: rgba(255,255,255,0.85);">❤</span>
+        <span style="left: 44%; top: 90%; --drift: 20px; --dur: 18s; --delay: 1.9s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 50%; top: 12%; --drift: -16px; --dur: 14s; --delay: 3.4s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 54%; top: 60%; --drift: 22px; --dur: 16s; --delay: 2.3s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 58%; top: 32%; --drift: -20px; --dur: 12.5s; --delay: 4.5s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 62%; top: 76%; --drift: 18px; --dur: 15.5s; --delay: 4.1s; color: rgba(255, 94, 122, 0.85);">❤</span>
+        <span style="left: 68%; top: 22%; --drift: -14px; --dur: 14.5s; --delay: 3.8s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 72%; top: 56%; --drift: 18px; --dur: 17.5s; --delay: 5.2s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 76%; top: 84%; --drift: -12px; --dur: 15s; --delay: 3.9s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 82%; top: 12%; --drift: 15px; --dur: 12s; --delay: 5.5s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 86%; top: 42%; --drift: -12px; --dur: 16s; --delay: 4.8s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 90%; top: 68%; --drift: 18px; --dur: 14s; --delay: 4.4s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 94%; top: 26%; --drift: -15px; --dur: 13.5s; --delay: 6.1s; color: rgba(255,255,255,0.85);">❤</span>
+        <span style="left: 96%; top: 86%; --drift: 14px; --dur: 17s; --delay: 6.4s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 6%; top: 92%; --drift: 10px; --dur: 15.5s; --delay: 5.8s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 32%; top: 96%; --drift: -16px; --dur: 16.5s; --delay: 4.9s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 48%; top: 82%; --drift: 17px; --dur: 14.5s; --delay: 6.8s; color: rgba(255,255,255,0.7);">❤</span>
+        <span style="left: 66%; top: 94%; --drift: -10px; --dur: 18s; --delay: 5.3s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 80%; top: 96%; --drift: 15px; --dur: 15.5s; --delay: 7.2s; color: rgba(255,255,255,0.7);">❤</span>
+    </div>
+
+    <main>
+        <h1>My Apology</h1>
+        <p class="intro-copy">
+            I want you to know that you are the person I trust and love from the
+            bottom of my heart. I know I have made many mistakes, but I hope you
+            understand that my intentions, love, and care for you are genuine.
+        </p>
+        <p class="please-understand intro-plea">Please try to understand!!!!</p>
+
+        <section class="birthday-intro" aria-labelledby="birthday-heading">
+            <h2 id="birthday-heading">Birthday Wish</h2>
+            <div class="birthday" id="birthday-message" aria-live="polite">
+                <div id="birthday-wish">
+                    <p>
+                    
+                    </p>
+                    <p>
+                        Happy birthday to someone who will always hold a very
+                        special place in my heart. I hope you know how much I
+                        genuinely wish for your happiness, today and every day.
+                        Even though we’re not in touch now, I still remember the
+                        time when we were close, the conversations we shared, the
+                        little moments that made me smile, and the way your
+                        presence could make an ordinary day feel special. There
+                        was a time when our feelings seemed to say more than
+                        either of us could bring ourselves to say out loud. Maybe
+                        we were shy, uncertain, or simply waiting for the right
+                        moment—but whatever the reason, I’ll always look back on
+                        that chapter of my life with tenderness. I don’t know
+                        whether you remember it the same way, and I don’t want to
+                        make your birthday feel heavy; I just wanted to say that
+                        knowing you and sharing those moments meant a lot to me.
+                        Time has passed, and life has carried us along separate
+                        paths, but that doesn’t erase the warmth I feel when I
+                        think of you. I hope your day is filled with laughter,
+                        kind people, and all the little things that make you feel
+                        loved. I hope the year ahead brings you peace when you
+                        need it, courage for the things you dream of, and
+                        countless reasons to be proud of yourself. You deserve to
+                        be surrounded by happiness and to find success in
+                        everything that matters to you. Wherever life takes you,
+                        I’ll always wish you well and hope it treats you gently.
+                        Have a beautiful birthday, take care of yourself, and
+                        keep being the wonderful person I remember.
+                    </p>
+                </div>
+                <p id="personal-message" hidden>
+                    I don't know what type of connection we shared , but whatever is that ....it was real from both side even 
+                    you don't admit that , but i know everything even i don't give you any reaction or hints......i'm just can't express what i feel .....just try to understand 
+                    those emotions what i couldn't say.......
+                </p>
+            </div>
+        </section>
+
+        <p class="please-understand closing-copy">
+            Please forgive me. I'm truly sorry for everything, including the hurt
+            between us and our group......
+        </p>
+        <p class="closing">
+            Please know that I'll be here whenever you need me. Just remember that.''''
+        </p>
+
+        <div class="actions">
+            <button type="button" id="reveal-message">click</button>
+            <button type="button" class="secondary" id="restore-wish">
+            birthday wish...
+    
+            </button>
+            <a class="memory-link" href="memories.html">Memories ❤️</a>
+            <a class="memory-link alt" href="birthday-moments.html">Birthday Note ✨</a>
+            <a class="memory-link alt" href="birthday-gallery.html">what you deserve 🌸</a>
+        </div>
+    </main>
+
+    <script>
+        const birthdayWish = document.getElementById("birthday-wish");
+        const personalMessage = document.getElementById("personal-message");
+
+        document.getElementById("reveal-message").addEventListener("click", () => {
+            birthdayWish.hidden = true;
+            personalMessage.hidden = false;
+        });
+
+        document.getElementById("restore-wish").addEventListener("click", () => {
+            personalMessage.hidden = true;
+            birthdayWish.hidden = false;
+        });
+    </script>
+</body>
+</html>

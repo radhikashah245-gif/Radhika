@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#160811">
+    <title>Our Memories</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            font-family: "Trebuchet MS", "Lucida Sans Unicode", Arial, sans-serif;
+            color: #fff0f4;
+            background: #160811;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+            margin: 0;
+            padding: clamp(24px, 6vw, 72px) 16px;
+            overflow-x: hidden;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(201, 34, 86, 0.3), transparent 48%),
+                radial-gradient(ellipse at 5% 90%, rgba(116, 22, 79, 0.28), transparent 42%),
+                linear-gradient(145deg, #160811, #260c1a 52%, #100812);
+        }
+
+        .tiny-hearts {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.04), transparent 55%);
+        }
+
+        .tiny-hearts span {
+            position: absolute;
+            font-size: clamp(0.8rem, 1.5vw, 1.4rem);
+            color: rgba(255, 94, 122, 0.9);
+            text-shadow: 0 0 12px rgba(255, 120, 141, 0.7);
+            opacity: 0;
+            animation: float-heart var(--dur, 12s) linear infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .tiny-hearts span::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 60%);
+            opacity: 0.6;
+            animation: shimmer 2.4s ease-in-out infinite;
+        }
+
+        @keyframes float-heart {
+            0% {
+                transform: translate3d(0, 0, 0) scale(0.7) rotate(0deg);
+                opacity: 0;
+            }
+            12% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate3d(var(--drift, 24px), -120vh, 0) scale(1.2) rotate(18deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                transform: scale(0.8);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            width: min(100%, 1000px);
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: #ffc2d2;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        header {
+            margin: 0 auto 42px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            color: #ff9ab7;
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 10px 0;
+            color: #ffe2eb;
+            font: 500 clamp(2.5rem, 8vw, 5rem)/1.1 Georgia, "Times New Roman", serif;
+            text-shadow: 0 0 32px rgba(255, 74, 128, 0.55);
+        }
+
+        header p {
+            color: #e8bdcb;
+        }
+
+        .memories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+            gap: 24px;
+        }
+
+        .memory-card {
+            overflow: hidden;
+            border: 1px solid rgba(255, 159, 188, 0.55);
+            border-radius: 20px;
+            background: rgba(36, 12, 27, 0.82);
+            box-shadow: 0 0 28px rgba(231, 39, 101, 0.2), 0 18px 48px rgba(0, 0, 0, 0.3);
+            animation: rise-in 700ms ease both;
+        }
+
+        .memory-card:nth-child(2) {
+            animation-delay: 120ms;
+        }
+
+        .memory-card:nth-child(3) {
+            animation-delay: 240ms;
+        }
+
+        .memory-card video {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background: linear-gradient(135deg, #210d1c, #3b1027);
+            object-fit: cover;
+        }
+
+        .memory-caption {
+            padding: 16px 18px 18px;
+        }
+
+        .memory-caption h2 {
+            margin: 0 0 6px;
+            color: #ffc4d4;
+            font: 500 1.3rem Georgia, "Times New Roman", serif;
+        }
+
+        .memory-caption p {
+            margin: 0;
+            color: #d7b6c1;
+            font-size: 0.92rem;
+        }
+
+        .video-note {
+            margin: 32px auto 0;
+            color: #cbaab6;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        @keyframes rise-in {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tiny-hearts" aria-hidden="true">
+        <span style="left: 2%; top: 6%; --drift: -18px; --dur: 13s; --delay: 0s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 8%; top: 26%; --drift: 22px; --dur: 15s; --delay: 1.2s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 12%; top: 48%; --drift: -14px; --dur: 14s; --delay: 2.6s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 16%; top: 78%; --drift: 18px; --dur: 18s; --delay: 0.8s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 22%; top: 10%; --drift: -12px; --dur: 12s; --delay: 2.1s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 26%; top: 40%; --drift: 26px; --dur: 17s; --delay: 1.7s; color: rgba(255, 94, 122, 0.85);">❤</span>
+        <span style="left: 30%; top: 74%; --drift: -10px; --dur: 16s; --delay: 3.1s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 36%; top: 18%; --drift: 20px; --dur: 15s; --delay: 2.8s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 40%; top: 54%; --drift: -18px; --dur: 13s; --delay: 0.6s; color: rgba(255,255,255,0.85);">❤</span>
+        <span style="left: 44%; top: 90%; --drift: 20px; --dur: 18s; --delay: 1.9s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 50%; top: 12%; --drift: -16px; --dur: 14s; --delay: 3.4s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 54%; top: 60%; --drift: 22px; --dur: 16s; --delay: 2.3s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 58%; top: 32%; --drift: -20px; --dur: 12.5s; --delay: 4.5s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 62%; top: 76%; --drift: 18px; --dur: 15.5s; --delay: 4.1s; color: rgba(255, 94, 122, 0.85);">❤</span>
+        <span style="left: 68%; top: 22%; --drift: -14px; --dur: 14.5s; --delay: 3.8s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 72%; top: 56%; --drift: 18px; --dur: 17.5s; --delay: 5.2s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 76%; top: 84%; --drift: -12px; --dur: 15s; --delay: 3.9s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 82%; top: 12%; --drift: 15px; --dur: 12s; --delay: 5.5s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 86%; top: 42%; --drift: -12px; --dur: 16s; --delay: 4.8s; color: rgba(255,255,255,0.8);">❤</span>
+    </div>
+
+    <main class="page">
+        <a class="back-link" href="new.html">← Back to the letter</a>
+
+        <header>
+            <div class="eyebrow">A little time capsule</div>
+            <h1>Our Memories</h1>
+            <p>Every little moment still has a place in my heart. ❤️</p>
+        </header>
+
+        <section class="memories" aria-label="Memory videos">
+            <article class="memory-card">
+                <video controls playsinline preload="metadata" aria-label="Memory video one" src="videos/memory-1.mp4"></video>
+                <div class="memory-caption">
+                    <h2>A moment to keep</h2>
+                    <p>A little piece of a day I still remember.</p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <video controls playsinline preload="metadata" aria-label="Memory video two" src="videos/memory-2.mp4"></video>
+                <div class="memory-caption">
+                    <h2>One of my favorites</h2>
+                    <p>Some memories never lose their warmth.</p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <video controls playsinline preload="metadata" aria-label="Memory video three" src="videos/memory-3.mp4"></video>
+                <div class="memory-caption">
+                    <h2>Still close to heart</h2>
+                    <p>A moment worth holding onto.</p>
+                </div>
+            </article>
+        </section>
+
+        <p class="video-note">Put your clips in the <strong>videos</strong> folder beside this page and name them <strong>memory-1.mp4</strong>, <strong>memory-2.mp4</strong>, and <strong>memory-3.mp4</strong>.</p>
+    </main>
+</body>
+</html>

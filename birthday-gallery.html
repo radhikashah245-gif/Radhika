@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Gallery</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg-1: #120d1d;
+            --bg-2: #1f1021;
+            --card: rgba(25, 14, 29, 0.84);
+            --pink: #ff9fc2;
+            --lavender: #d0b3f8;
+            --gold: #f6d49a;
+            --text: #fff5fa;
+            --muted: #e7d2da;
+            --border: rgba(255, 197, 221, 0.48);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            position: relative;
+            margin: 0;
+            min-height: 100vh;
+            padding: clamp(24px, 4vw, 48px) 16px;
+            overflow-x: hidden;
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(189, 120, 255, 0.2), transparent 35%),
+                radial-gradient(circle at bottom right, rgba(255, 135, 182, 0.2), transparent 30%),
+                linear-gradient(135deg, var(--bg-1), var(--bg-2) 55%, #0e1722);
+        }
+
+        .tiny-hearts {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.04), transparent 55%);
+        }
+
+        .tiny-hearts span {
+            position: absolute;
+            font-size: clamp(0.8rem, 1.5vw, 1.4rem);
+            color: rgba(255, 94, 122, 0.9);
+            text-shadow: 0 0 12px rgba(255, 120, 141, 0.7);
+            opacity: 0;
+            animation: float-heart var(--dur, 12s) linear infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .tiny-hearts span::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 60%);
+            opacity: 0.6;
+            animation: shimmer 2.4s ease-in-out infinite;
+        }
+
+        @keyframes float-heart {
+            0% {
+                transform: translate3d(0, 0, 0) scale(0.7) rotate(0deg);
+                opacity: 0;
+            }
+            12% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate3d(var(--drift, 24px), -120vh, 0) scale(1.2) rotate(18deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                transform: scale(0.8);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            width: min(100%, 1100px);
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--pink);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .back-link:hover { text-decoration: underline; }
+
+        header {
+            margin: 0 auto 34px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-size: 0.72rem;
+        }
+
+        h1 {
+            margin: 12px 0 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(2.3rem, 7vw, 4.5rem);
+            text-shadow: 0 0 24px rgba(255, 112, 171, 0.36);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        .tile {
+            min-height: 210px;
+            padding: 22px 20px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            background: linear-gradient(160deg, rgba(39, 22, 43, 0.9), rgba(19, 32, 51, 0.82));
+            box-shadow: 0 20px 42px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .tile:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 52px rgba(0, 0, 0, 0.28);
+        }
+
+        .tile:nth-child(1) { border-color: rgba(255, 190, 213, 0.8); }
+        .tile:nth-child(2) { border-color: rgba(205, 179, 250, 0.8); }
+        .tile:nth-child(3) { border-color: rgba(246, 212, 154, 0.8); }
+        .tile:nth-child(4) { border-color: rgba(164, 214, 255, 0.8); }
+
+        .badge {
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .tile h2 {
+            margin: 12px 0 0;
+            font-size: clamp(1.2rem, 3vw, 1.7rem);
+            color: #fff8fb;
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .tile p {
+            margin: 14px 0 0;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            text-align: center;
+            color: #f7d6e0;
+            font-size: 1.05rem;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+        }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            border: 1px solid rgba(255, 201, 220, 0.75);
+            background: linear-gradient(135deg, #854883, #5d7bd9);
+        }
+    </style>
+</head>
+<body>
+    <div class="tiny-hearts" aria-hidden="true">
+        <span style="left: 2%; top: 6%; --drift: -18px; --dur: 13s; --delay: 0s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 8%; top: 26%; --drift: 22px; --dur: 15s; --delay: 1.2s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 12%; top: 48%; --drift: -14px; --dur: 14s; --delay: 2.6s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 16%; top: 78%; --drift: 18px; --dur: 18s; --delay: 0.8s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 22%; top: 10%; --drift: -12px; --dur: 12s; --delay: 2.1s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 26%; top: 40%; --drift: 26px; --dur: 17s; --delay: 1.7s; color: rgba(255, 94, 122, 0.85);">❤</span>
+        <span style="left: 30%; top: 74%; --drift: -10px; --dur: 16s; --delay: 3.1s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 36%; top: 18%; --drift: 20px; --dur: 15s; --delay: 2.8s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 40%; top: 54%; --drift: -18px; --dur: 13s; --delay: 0.6s; color: rgba(255,255,255,0.85);">❤</span>
+        <span style="left: 44%; top: 90%; --drift: 20px; --dur: 18s; --delay: 1.9s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 50%; top: 12%; --drift: -16px; --dur: 14s; --delay: 3.4s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 54%; top: 60%; --drift: 22px; --dur: 16s; --delay: 2.3s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 58%; top: 32%; --drift: -20px; --dur: 12.5s; --delay: 4.5s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 62%; top: 76%; --drift: 18px; --dur: 15.5s; --delay: 4.1s; color: rgba(255, 94, 122, 0.85);">❤</span>
+        <span style="left: 68%; top: 22%; --drift: -14px; --dur: 14.5s; --delay: 3.8s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 72%; top: 56%; --drift: 18px; --dur: 17.5s; --delay: 5.2s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 76%; top: 84%; --drift: -12px; --dur: 15s; --delay: 3.9s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 82%; top: 12%; --drift: 15px; --dur: 12s; --delay: 5.5s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 86%; top: 42%; --drift: -12px; --dur: 16s; --delay: 4.8s; color: rgba(255,255,255,0.8);">❤</span>
+    </div>
+
+    <main class="page">
+        <a class="back-link" href="new.html">← Back to the letter</a>
+
+        <header>
+            <div class="eyebrow">Birthday collection</div>
+            <h1>Little Pieces of Joy</h1>
+        </header>
+
+        <section class="gallery" aria-label="Birthday gallery cards">
+            <article class="tile">
+                <div class="badge">Joy</div>
+                <h2>Smile Worth Keeping</h2>
+                <p>May your every day begin with a smile that feels as warm as your heart.</p>
+            </article>
+
+            <article class="tile">
+                <div class="badge">Love</div>
+                <h2>Gentle Memories</h2>
+                <p>May you carry lovely memories close and let them keep you company through every season.</p>
+            </article>
+
+            <article class="tile">
+                <div class="badge">Peace</div>
+                <h2>Calm & Clarity</h2>
+                <p>May your path feel easier, your thoughts lighter, and your heart more at peace.</p>
+            </article>
+
+            <article class="tile">
+                <div class="badge">Dreams</div>
+                <h2>Bright Tomorrow</h2>
+                <p>May the year ahead open doors to the things that make your spirit glow.</p>
+            </article>
+        </section>
+
+        <p class="footer-note">Happy birthday to someone who deserves a year full of love, wonder, and beautiful surprises.</p>
+
+        <div class="actions">
+            <a class="nav-link" href="birthday-moments.html">Birthday Note</a>
+            <a class="nav-link" href="memories.html">Memories</a>
+        </div>
+    </main>
+</body>
+</html>
