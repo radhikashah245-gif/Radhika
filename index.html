@@ -127,6 +127,119 @@
             min-height: 8em;
         }
 
+        .letter-toggle {
+            display: grid;
+            justify-items: center;
+            gap: 8px;
+            min-height: 0;
+            margin: 0 auto 18px;
+            padding: 8px 16px;
+            border: 0;
+            border-radius: 16px;
+            background: transparent;
+            box-shadow: none;
+            color: #f4c7d9;
+        }
+
+        .letter-toggle:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .letter-envelope {
+            position: relative;
+            width: 108px;
+            height: 78px;
+            perspective: 500px;
+        }
+
+        .envelope-back,
+        .envelope-pocket {
+            position: absolute;
+            inset: 14px 0 0;
+            border-radius: 0 0 9px 9px;
+        }
+
+        .envelope-back {
+            z-index: 0;
+            background: linear-gradient(145deg, #a84f76, #6f456f);
+        }
+
+        .envelope-letter {
+            position: absolute;
+            bottom: 8px;
+            left: 12px;
+            z-index: 1;
+            display: grid;
+            width: calc(100% - 24px);
+            height: 48px;
+            place-items: center;
+            border-radius: 5px;
+            background: linear-gradient(145deg, #fff8ef, #f3dfe7);
+            color: #a8325a;
+            font-size: 1.5rem;
+            transform: translateY(14px);
+            transition: transform 450ms ease, z-index 0ms 450ms;
+        }
+
+        .envelope-pocket {
+            z-index: 2;
+            background: linear-gradient(145deg, #bd6689, #84558a);
+            clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 14px;
+            left: 0;
+            z-index: 3;
+            width: 0;
+            height: 0;
+            border-top: 38px solid #e6a0b7;
+            border-right: 54px solid transparent;
+            border-left: 54px solid transparent;
+            transform-origin: top center;
+            transition: transform 450ms ease, z-index 0ms 225ms;
+        }
+
+        .letter-toggle[aria-expanded="true"] .envelope-letter {
+            z-index: 4;
+            transform: translateY(-20px);
+            transition-delay: 0ms;
+        }
+
+        .letter-toggle[aria-expanded="true"] .envelope-flap {
+            z-index: 1;
+            transform: rotateX(180deg);
+        }
+
+        .letter-label {
+            font-size: 0.95rem;
+        }
+
+        #personal-message:not([hidden]) {
+            max-width: 62ch;
+            margin: 0 auto 18px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 190, 211, 0.7);
+            border-radius: 16px;
+            background: linear-gradient(145deg, rgba(255, 248, 239, 0.12), rgba(115, 63, 100, 0.22));
+            box-shadow: 0 0 24px rgba(255, 155, 190, 0.15);
+            color: #fff3e7;
+            animation: letter-unfold 500ms ease both;
+        }
+
+        @keyframes letter-unfold {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
         .please-understand {
             color: #d7b6e8;
             text-align: center;
@@ -283,9 +396,43 @@
             .birthday-intro #birthday-wish p,
             .closing-copy,
             .closing,
-            .actions {
+            .actions,
+            #personal-message:not([hidden]) {
                 opacity: 1;
                 animation: none;
+            }
+        }
+        .tiny-hearts.box-hearts {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            border-radius: inherit;
+            background: none;
+        }
+
+        .tiny-hearts.box-hearts span {
+            font-size: 0.7rem;
+            color: rgba(255, 190, 211, 0.65);
+            text-shadow: 0 0 8px rgba(255, 155, 190, 0.5);
+            animation: box-heart-float var(--dur, 7s) ease-in-out infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .tiny-hearts.box-hearts span::before {
+            display: none;
+        }
+
+        @keyframes box-heart-float {
+            0% { transform: translate3d(0, 14px, 0) scale(0.75); opacity: 0; }
+            22% { opacity: 0.5; }
+            68% { transform: translate3d(var(--drift, 8px), -24px, 0) scale(1); opacity: 0.45; }
+            100% { transform: translate3d(0, -46px, 0) scale(0.8); opacity: 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .tiny-hearts.box-hearts span {
+                animation: none !important;
             }
         }
     </style>
@@ -322,6 +469,12 @@
     </div>
 
     <main>
+        <div class="tiny-hearts box-hearts" aria-hidden="true">
+            <span style="left: 12%; top: 28%; --drift: -8px; --dur: 7s; --delay: 0s;">❤</span>
+            <span style="left: 38%; top: 72%; --drift: 9px; --dur: 8.5s; --delay: 1.6s;">❤</span>
+            <span style="left: 69%; top: 45%; --drift: -6px; --dur: 7.8s; --delay: 2.9s;">❤</span>
+            <span style="left: 88%; top: 66%; --drift: 10px; --dur: 9s; --delay: 4s;">❤</span>
+        </div>
         <h1>My Apology</h1>
         <p class="intro-copy">
             I want you to know that you are the person I trust and love from the
@@ -332,6 +485,16 @@
 
         <section class="birthday-intro" aria-labelledby="birthday-heading">
             <h2 id="birthday-heading">Birthday Wish</h2>
+            <button type="button" class="letter-toggle" id="reveal-message"
+                aria-expanded="false" aria-controls="personal-message">
+                <span class="letter-envelope" aria-hidden="true">
+                    <span class="envelope-back"></span>
+                    <span class="envelope-letter">♥</span>
+                    <span class="envelope-flap"></span>
+                    <span class="envelope-pocket"></span>
+                </span>
+                <span class="letter-label">Open your letter</span>
+            </button>
             <div class="birthday" id="birthday-message" aria-live="polite">
                 <div id="birthday-wish">
                     <p>
@@ -384,11 +547,6 @@
         </p>
 
         <div class="actions">
-            <button type="button" id="reveal-message">click</button>
-            <button type="button" class="secondary" id="restore-wish">
-            birthday wish...
-    
-            </button>
             <a class="memory-link" href="memories.html">Memories ❤️</a>
             <a class="memory-link alt" href="birthday-moments.html">Birthday Note ✨</a>
             <a class="memory-link alt" href="birthday-gallery.html">what you deserve 🌸</a>
@@ -398,15 +556,15 @@
     <script>
         const birthdayWish = document.getElementById("birthday-wish");
         const personalMessage = document.getElementById("personal-message");
+        const letterToggle = document.getElementById("reveal-message");
+        const letterLabel = letterToggle.querySelector(".letter-label");
 
-        document.getElementById("reveal-message").addEventListener("click", () => {
-            birthdayWish.hidden = true;
-            personalMessage.hidden = false;
-        });
-
-        document.getElementById("restore-wish").addEventListener("click", () => {
-            personalMessage.hidden = true;
-            birthdayWish.hidden = false;
+        letterToggle.addEventListener("click", () => {
+            const openingLetter = personalMessage.hidden;
+            birthdayWish.hidden = openingLetter;
+            personalMessage.hidden = !openingLetter;
+            letterToggle.setAttribute("aria-expanded", String(openingLetter));
+            letterLabel.textContent = openingLetter ? "Return to birthday wish" : "Open your letter";
         });
     </script>
 </body>

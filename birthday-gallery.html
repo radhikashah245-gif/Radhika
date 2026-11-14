@@ -202,6 +202,39 @@
             border: 1px solid rgba(255, 201, 220, 0.75);
             background: linear-gradient(135deg, #854883, #5d7bd9);
         }
+        .tiny-hearts.box-hearts {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            border-radius: inherit;
+            background: none;
+        }
+
+        .tiny-hearts.box-hearts span {
+            font-size: 0.7rem;
+            color: rgba(255, 190, 211, 0.65);
+            text-shadow: 0 0 8px rgba(255, 155, 190, 0.5);
+            animation: box-heart-float var(--dur, 7s) ease-in-out infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .tiny-hearts.box-hearts span::before {
+            display: none;
+        }
+
+        @keyframes box-heart-float {
+            0% { transform: translate3d(0, 14px, 0) scale(0.75); opacity: 0; }
+            22% { opacity: 0.5; }
+            68% { transform: translate3d(var(--drift, 8px), -24px, 0) scale(1); opacity: 0.45; }
+            100% { transform: translate3d(0, -46px, 0) scale(0.8); opacity: 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .tiny-hearts.box-hearts span {
+                animation: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -228,6 +261,12 @@
     </div>
 
     <main class="page">
+        <div class="tiny-hearts box-hearts" aria-hidden="true">
+            <span style="left: 12%; top: 28%; --drift: -8px; --dur: 7s; --delay: 0s;">❤</span>
+            <span style="left: 38%; top: 72%; --drift: 9px; --dur: 8.5s; --delay: 1.6s;">❤</span>
+            <span style="left: 69%; top: 45%; --drift: -6px; --dur: 7.8s; --delay: 2.9s;">❤</span>
+            <span style="left: 88%; top: 66%; --drift: 10px; --dur: 9s; --delay: 4s;">❤</span>
+        </div>
         <a class="back-link" href="new.html">← Back to the letter</a>
 
         <header>
