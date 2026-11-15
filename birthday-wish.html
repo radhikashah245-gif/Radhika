@@ -30,6 +30,59 @@
                 radial-gradient(ellipse at 5% 90%, rgba(42, 93, 164, 0.15), transparent 42%),
                 linear-gradient(145deg, #030914, #081a2e 52%, #020710);
         }
+        .tiny-hearts {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.04), transparent 55%);
+        }
+
+        .tiny-hearts span {
+            position: absolute;
+            font-size: clamp(0.8rem, 1.5vw, 1.4rem);
+            color: rgba(255, 94, 122, 0.9);
+            text-shadow: 0 0 12px rgba(255, 120, 141, 0.7);
+            opacity: 0;
+            animation: float-heart var(--dur, 12s) linear infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .tiny-hearts span::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 60%);
+            opacity: 0.6;
+            animation: shimmer 2.4s ease-in-out infinite;
+        }
+
+        @keyframes float-heart {
+            0% {
+                transform: translate3d(0, 0, 0) scale(0.7) rotate(0deg);
+                opacity: 0;
+            }
+            12% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate3d(var(--drift, 24px), -120vh, 0) scale(1.2) rotate(18deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                transform: scale(0.8);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
 
         .page {
             position: relative;
@@ -213,9 +266,95 @@
                 scroll-behavior: auto !important;
             }
         }
+        .tiny-hearts.box-hearts {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            border-radius: inherit;
+            background: none;
+        }
+
+        .tiny-hearts.box-hearts span {
+            font-size: 0.7rem;
+            color: rgba(255, 190, 211, 0.65);
+            text-shadow: 0 0 8px rgba(255, 155, 190, 0.5);
+            animation: box-heart-float var(--dur, 7s) ease-in-out infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .tiny-hearts.box-hearts span::before {
+            display: none;
+        }
+
+        @keyframes box-heart-float {
+            0% { transform: translate3d(0, 14px, 0) scale(0.75); opacity: 0; }
+            22% { opacity: 0.5; }
+            68% { transform: translate3d(var(--drift, 8px), -24px, 0) scale(1); opacity: 0.45; }
+            100% { transform: translate3d(0, -46px, 0) scale(0.8); opacity: 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .tiny-hearts.box-hearts span {
+                animation: none !important;
+            }
+        }
     </style>
 </head>
 <body>
+         <div class="tiny-hearts" aria-hidden="true">
+        <span style="left: 2%; top: 6%; --drift: -18px; --dur: 13s; --delay: 0s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 8%; top: 26%; --drift: 22px; --dur: 15s; --delay: 1.2s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 12%; top: 48%; --drift: -14px; --dur: 14s; --delay: 2.6s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 16%; top: 78%; --drift: 18px; --dur: 18s; --delay: 0.8s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 22%; top: 10%; --drift: -12px; --dur: 12s; --delay: 2.1s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 26%; top: 40%; --drift: 26px; --dur: 17s; --delay: 1.7s; color: rgba(255, 94, 122, 0.85);">❤</span>
+        <span style="left: 30%; top: 74%; --drift: -10px; --dur: 16s; --delay: 3.1s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 36%; top: 18%; --drift: 20px; --dur: 15s; --delay: 2.8s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 40%; top: 54%; --drift: -18px; --dur: 13s; --delay: 0.6s; color: rgba(255,255,255,0.85);">❤</span>
+        <span style="left: 44%; top: 90%; --drift: 20px; --dur: 18s; --delay: 1.9s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 50%; top: 12%; --drift: -16px; --dur: 14s; --delay: 3.4s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 54%; top: 60%; --drift: 22px; --dur: 16s; --delay: 2.3s; color: rgba(255, 94, 122, 0.9);">❤</span>
+        <span style="left: 58%; top: 32%; --drift: -20px; --dur: 12.5s; --delay: 4.5s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 62%; top: 76%; --drift: 18px; --dur: 15.5s; --delay: 4.1s; color: rgba(255, 94, 122, 0.85);">❤</span>
+        <span style="left: 68%; top: 22%; --drift: -14px; --dur: 14.5s; --delay: 3.8s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 72%; top: 56%; --drift: 18px; --dur: 17.5s; --delay: 5.2s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 76%; top: 84%; --drift: -12px; --dur: 15s; --delay: 3.9s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 82%; top: 12%; --drift: 15px; --dur: 12s; --delay: 5.5s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 86%; top: 42%; --drift: -12px; --dur: 16s; --delay: 4.8s; color: rgba(255,255,255,0.8);">❤</span>
+        <span style="left: 90%; top: 68%; --drift: 18px; --dur: 14s; --delay: 4.4s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 94%; top: 26%; --drift: -15px; --dur: 13.5s; --delay: 6.1s; color: rgba(255,255,255,0.85);">❤</span>
+        <span style="left: 96%; top: 86%; --drift: 14px; --dur: 17s; --delay: 6.4s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 6%; top: 92%; --drift: 10px; --dur: 15.5s; --delay: 5.8s; color: rgba(255,255,255,0.9);">❤</span>
+        <span style="left: 32%; top: 96%; --drift: -16px; --dur: 16.5s; --delay: 4.9s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 48%; top: 82%; --drift: 17px; --dur: 14.5s; --delay: 6.8s; color: rgba(255,255,255,0.7);">❤</span>
+        <span style="left: 66%; top: 94%; --drift: -10px; --dur: 18s; --delay: 5.3s; color: rgba(255, 94, 122, 0.8);">❤</span>
+        <span style="left: 80%; top: 96%; --drift: 15px; --dur: 15.5s; --delay: 7.2s; color: rgba(255,255,255,0.7);">❤</span>
+    </div>
+
+    <main>
+        <div class="tiny-hearts box-hearts" aria-hidden="true">
+            <span style="left: 8%; top: 20%; --drift: -7px; --dur: 7s; --delay: 0s;">❤</span>
+            <span style="left: 18%; top: 42%; --drift: 9px; --dur: 8.2s; --delay: 0.8s;">❤</span>
+            <span style="left: 28%; top: 68%; --drift: -10px; --dur: 8.8s; --delay: 1.6s;">❤</span>
+            <span style="left: 38%; top: 26%; --drift: 12px; --dur: 7.5s; --delay: 2.2s;">❤</span>
+            <span style="left: 48%; top: 52%; --drift: -8px; --dur: 9s; --delay: 2.9s;">❤</span>
+            <span style="left: 58%; top: 32%; --drift: 11px; --dur: 8.4s; --delay: 3.4s;">❤</span>
+            <span style="left: 68%; top: 74%; --drift: -9px; --dur: 9.3s; --delay: 4s;">❤</span>
+            <span style="left: 78%; top: 18%; --drift: 10px; --dur: 7.9s; --delay: 4.7s;">❤</span>
+            <span style="left: 88%; top: 46%; --drift: -7px; --dur: 8.7s; --delay: 5.2s;">❤</span>
+            <span style="left: 94%; top: 64%; --drift: 9px; --dur: 9.5s; --delay: 5.8s;">❤</span>
+            <span style="left: 12%; top: 78%; --drift: -11px; --dur: 8.1s; --delay: 6.4s;">❤</span>
+            <span style="left: 24%; top: 14%; --drift: 12px; --dur: 7.7s; --delay: 6.8s;">❤</span>
+            <span style="left: 36%; top: 82%; --drift: -8px; --dur: 8.9s; --delay: 7.2s;">❤</span>
+            <span style="left: 52%; top: 16%; --drift: 9px; --dur: 7.4s; --delay: 7.8s;">❤</span>
+            <span style="left: 62%; top: 84%; --drift: -9px; --dur: 9.2s; --delay: 8.3s;">❤</span>
+            <span style="left: 72%; top: 48%; --drift: 10px; --dur: 8.5s; --delay: 8.9s;">❤</span>
+            <span style="left: 82%; top: 72%; --drift: -10px; --dur: 9.7s; --delay: 9.5s;">❤</span>
+            <span style="left: 90%; top: 24%; --drift: 11px; --dur: 7.6s; --delay: 10.1s;">❤</span>
+            <span style="left: 4%; top: 56%; --drift: 8px; --dur: 8.8s; --delay: 10.7s;">❤</span>
+            <span style="left: 98%; top: 48%; --drift: -9px; --dur: 9.1s; --delay: 11.2s;">❤</span>
+        </div>
     <div class="confetti-layer" id="wish-celebration" aria-hidden="true"></div>
 
     <main class="page">
@@ -234,7 +373,7 @@
             </div>
             <p>Close your eyes, make a wish, then tap the button to blow out the candle.</p>
             <button class="wish-button" id="make-wish" type="button">Make a wish ✨</button>
-            <p class="wish-message" id="wish-message" role="status" hidden>Your wish is on its way. Happy birthday! 🎉</p>
+            <p class="wish-message" id="wish-message" role="status" hidden> Happy birthday! 🎉</p>
         </section>
     </main>
 
