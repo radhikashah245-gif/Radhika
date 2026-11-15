@@ -94,68 +94,6 @@
             line-height: 1.6;
         }
 
-        .wish-writing {
-            max-width: 520px;
-            margin: 24px auto 30px;
-            text-align: left;
-        }
-
-        .wish-label {
-            display: block;
-            margin-bottom: 10px;
-            color: #a8e1ff;
-            font-weight: 700;
-        }
-
-        .wish-prompts {
-            margin: 0 0 16px;
-            padding-left: 22px;
-            color: #bfd5e8;
-            line-height: 1.7;
-        }
-
-        .wish-textarea {
-            display: block;
-            width: 100%;
-            min-height: 130px;
-            padding: 14px;
-            border: 1px solid rgba(143, 207, 250, 0.5);
-            border-radius: 14px;
-            color: #edf7ff;
-            background: rgba(1, 4, 10, 0.7);
-            font: inherit;
-            line-height: 1.6;
-            resize: vertical;
-        }
-
-        .wish-textarea::placeholder {
-            color: #91a9bf;
-        }
-
-        .wish-textarea:focus-visible {
-            outline: 3px solid #a8e1ff;
-            outline-offset: 3px;
-        }
-
-        .wish-submit {
-            display: flex;
-            justify-content: center;
-            margin-top: 16px;
-        }
-
-        .wish-writing-note {
-            margin: 8px 0 0;
-            color: #91a9bf !important;
-            font-size: 0.85rem;
-        }
-
-        .collection-notice {
-            margin: 16px 0 0;
-            color: #b9d1e6 !important;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
         .candle {
             position: relative;
             width: 42px;
@@ -291,21 +229,6 @@
 
         <section class="wish-card" aria-labelledby="wish-heading">
             <h2 id="wish-heading">What do you wish for?</h2>
-            <form class="wish-writing" id="wish-form" method="post" target="wish-submit-frame">
-                <label class="wish-label" for="wish-note">Write your birthday wish</label>
-                <ul class="wish-prompts" id="wish-prompts">
-                    <li>What would make you happiest this year?</li>
-                    <li>Is there something you want to try, learn, or experience?</li>
-                    <li>What is one dream you hope to move closer to?</li>
-                </ul>
-                <textarea class="wish-textarea" id="wish-note" name="wish" maxlength="500" required aria-describedby="wish-prompts collection-notice send-wish-feedback" placeholder="This year, I hope to..."></textarea>
-                <p class="collection-notice" id="collection-notice">When you submit, your wish will be stored in a Google Sheet the site owner can read. Please don’t include private information.</p>
-                <div class="wish-submit">
-                    <button class="wish-button" id="send-wish" type="submit">Submit</button>
-                </div>
-                <p class="wish-writing-note" id="send-wish-feedback" role="status" hidden></p>
-            </form>
-            <iframe id="wish-submit-frame" name="wish-submit-frame" title="Wish submission response" hidden></iframe>
             <div class="candle" aria-hidden="true">
                 <span class="candle-flame"></span>
             </div>
@@ -320,81 +243,8 @@
         const wishMessage = document.getElementById("wish-message");
         const wishCard = document.querySelector(".wish-card");
         const wishCelebration = document.getElementById("wish-celebration");
-        const wishForm = document.getElementById("wish-form");
-        const wishNoteInput = document.getElementById("wish-note");
-        const sendWishFeedback = document.getElementById("send-wish-feedback");
-        const sendWishButton = document.getElementById("send-wish");
-        const wishSubmitFrame = document.getElementById("wish-submit-frame");
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const confettiColors = ["#c9eeff", "#8fd7ff", "#fff2c9", "#5da7e8", "#d6f1ff"];
-        // Paste the deployed Apps Script web app URL here before publishing.
-        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxWpbeIrQEyBKHQEUfRPLX_HMHokMkkWhr85WAqzNsFBSc48AH-2VkL_-ZyzNciVwrv/exec";
-        let wishSubmissionPending = false;
-        let wishSubmissionTimeout;
-
-        window.addEventListener("message", (event) => {
-            const result = event.data;
-            if (
-                event.source !== wishSubmitFrame.contentWindow ||
-                !wishSubmissionPending ||
-                !result ||
-                typeof result !== "object" ||
-                result.type !== "wish-submission-result"
-            ) {
-                return;
-            }
-
-            window.clearTimeout(wishSubmissionTimeout);
-            wishSubmissionPending = false;
-            sendWishButton.disabled = false;
-            sendWishFeedback.textContent = result.message || "The submission could not be confirmed.";
-            sendWishFeedback.hidden = false;
-
-            if (result.saved === true) {
-                wishNoteInput.value = "";
-            }
-        });
-
-        wishNoteInput.addEventListener("input", () => {
-            wishNoteInput.removeAttribute("aria-invalid");
-            sendWishFeedback.hidden = true;
-        });
-
-        wishForm.addEventListener("submit", (event) => {
-            const wish = wishNoteInput.value.trim();
-            if (!wish) {
-                event.preventDefault();
-                wishNoteInput.setAttribute("aria-invalid", "true");
-                sendWishFeedback.textContent = "Write your wish above before submitting it.";
-                sendWishFeedback.hidden = false;
-                wishNoteInput.focus();
-                return;
-            }
-
-            if (!GOOGLE_APPS_SCRIPT_URL.startsWith("https://script.google.com/macros/s/") || !GOOGLE_APPS_SCRIPT_URL.endsWith("/exec")) {
-                event.preventDefault();
-                sendWishFeedback.textContent = "Wish collection isn’t connected yet. The site owner needs to add the deployed Apps Script URL.";
-                sendWishFeedback.hidden = false;
-                return;
-            }
-
-            wishForm.action = GOOGLE_APPS_SCRIPT_URL;
-            wishSubmissionPending = true;
-            sendWishButton.disabled = true;
-            sendWishFeedback.textContent = "Submitting your wish...";
-            sendWishFeedback.hidden = false;
-
-            wishSubmissionTimeout = window.setTimeout(() => {
-                if (!wishSubmissionPending) {
-                    return;
-                }
-
-                wishSubmissionPending = false;
-                sendWishButton.disabled = false;
-                sendWishFeedback.textContent = "No confirmation received. Check the Wishes sheet before trying again.";
-                sendWishFeedback.hidden = false;
-            }, 20000);
-        });
 
         makeWishButton.addEventListener("click", () => {
             wishCard.classList.add("wish-made");
@@ -419,5 +269,6 @@
             }
         });
     </script>
+    <script src="music.js"></script>
 </body>
 </html>
