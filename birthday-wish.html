@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#030914">
+    <title>Make a Birthday Wish</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            font-family: "Trebuchet MS", "Lucida Sans Unicode", Arial, sans-serif;
+            color: #edf7ff;
+            background: #030914;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            position: relative;
+            display: grid;
+            min-height: 100vh;
+            margin: 0;
+            padding: clamp(24px, 6vw, 72px) 16px;
+            overflow-x: hidden;
+            place-items: center;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(62, 150, 230, 0.17), transparent 48%),
+                radial-gradient(ellipse at 5% 90%, rgba(42, 93, 164, 0.15), transparent 42%),
+                linear-gradient(145deg, #030914, #081a2e 52%, #020710);
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            width: min(100%, 760px);
+            margin: auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: #9bdcff;
+            text-decoration: none;
+        }
+
+        .back-link:hover,
+        .back-link:focus-visible {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        header {
+            margin: 0 auto 32px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            color: #83cfff;
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 10px 0;
+            color: #e6f5ff;
+            font: 500 clamp(2.5rem, 8vw, 5rem)/1.1 Georgia, "Times New Roman", serif;
+            text-shadow: 0 0 32px rgba(82, 171, 238, 0.55);
+        }
+
+        header p {
+            color: #b9d1e6;
+        }
+
+        .wish-card {
+            padding: clamp(26px, 6vw, 48px) 20px;
+            border: 1px solid rgba(143, 207, 250, 0.55);
+            border-radius: 24px;
+            background: rgba(6, 16, 30, 0.97);
+            box-shadow: 0 0 28px rgba(47, 145, 221, 0.13), 0 18px 48px rgba(0, 0, 0, 0.45);
+            text-align: center;
+        }
+
+        .wish-card h2 {
+            margin: 0;
+            color: #e6f5ff;
+            font: 500 1.7rem Georgia, "Times New Roman", serif;
+        }
+
+        .wish-card p {
+            color: #bfd5e8;
+            line-height: 1.6;
+        }
+
+        .wish-writing {
+            max-width: 520px;
+            margin: 24px auto 30px;
+            text-align: left;
+        }
+
+        .wish-label {
+            display: block;
+            margin-bottom: 10px;
+            color: #a8e1ff;
+            font-weight: 700;
+        }
+
+        .wish-prompts {
+            margin: 0 0 16px;
+            padding-left: 22px;
+            color: #bfd5e8;
+            line-height: 1.7;
+        }
+
+        .wish-textarea {
+            display: block;
+            width: 100%;
+            min-height: 130px;
+            padding: 14px;
+            border: 1px solid rgba(143, 207, 250, 0.5);
+            border-radius: 14px;
+            color: #edf7ff;
+            background: rgba(1, 4, 10, 0.7);
+            font: inherit;
+            line-height: 1.6;
+            resize: vertical;
+        }
+
+        .wish-textarea::placeholder {
+            color: #91a9bf;
+        }
+
+        .wish-textarea:focus-visible {
+            outline: 3px solid #a8e1ff;
+            outline-offset: 3px;
+        }
+
+        .wish-submit {
+            display: flex;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        .wish-writing-note {
+            margin: 8px 0 0;
+            color: #91a9bf !important;
+            font-size: 0.85rem;
+        }
+
+        .collection-notice {
+            margin: 16px 0 0;
+            color: #b9d1e6 !important;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .candle {
+            position: relative;
+            width: 42px;
+            height: 84px;
+            margin: 38px auto 28px;
+            border: 1px solid rgba(225, 243, 255, 0.8);
+            border-radius: 8px 8px 5px 5px;
+            background: linear-gradient(90deg, #1a486c, #5b8099 48%, #1a486c);
+            box-shadow: 0 8px 22px rgba(54, 133, 190, 0.2);
+        }
+
+        .candle::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: -8px;
+            width: 2px;
+            height: 10px;
+            background: #fff0c9;
+            transform: translateX(-50%);
+        }
+
+        .candle-flame {
+            position: absolute;
+            left: 50%;
+            top: -26px;
+            width: 18px;
+            height: 23px;
+            border-radius: 50% 50% 50% 0;
+            background: linear-gradient(145deg, #fff8c7, #ff9a55 75%);
+            box-shadow: 0 0 18px rgba(255, 190, 96, 0.8);
+            transform: translateX(-50%) rotate(-45deg);
+            transform-origin: 50% 80%;
+            animation: candle-flicker 900ms ease-in-out infinite alternate;
+            transition: opacity 180ms ease, transform 180ms ease;
+        }
+
+        .wish-card.wish-made .candle-flame {
+            opacity: 0;
+            transform: translateX(-50%) rotate(-45deg) scale(0.2);
+        }
+
+        @keyframes candle-flicker {
+            from { filter: brightness(0.92); }
+            to { filter: brightness(1.15); }
+        }
+
+        .wish-button {
+            min-height: 48px;
+            padding: 11px 22px;
+            border: 1px solid rgba(143, 207, 250, 0.75);
+            border-radius: 999px;
+            color: #f3fbff;
+            background: linear-gradient(135deg, #1a4f76, #102448);
+            box-shadow: 0 0 18px rgba(69, 157, 225, 0.18);
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .wish-button:hover:not(:disabled) {
+            filter: brightness(1.12);
+        }
+
+        .wish-button:focus-visible {
+            outline: 3px solid #a8e1ff;
+            outline-offset: 3px;
+        }
+
+        .wish-button:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        .wish-message {
+            margin: 20px 0 0;
+            color: #a8e1ff !important;
+            font-weight: 700;
+        }
+
+        .confetti-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -20px;
+            width: 10px;
+            height: 16px;
+            border-radius: 3px;
+            opacity: 0.9;
+            animation: confetti-fall var(--dur, 4s) ease-in forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translate3d(0, 0, 0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            100% {
+                transform: translate3d(var(--drift, 60px), 110vh, 0) rotate(540deg);
+                opacity: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="confetti-layer" id="wish-celebration" aria-hidden="true"></div>
+
+    <main class="page">
+        <a class="back-link" href="memories.html">← Back to our memories</a>
+
+        <header>
+            <div class="eyebrow">A little birthday moment</div>
+            <h1>Make a Wish</h1>
+            <p>Take a breath, think of something wonderful, and make it your wish.</p>
+        </header>
+
+        <section class="wish-card" aria-labelledby="wish-heading">
+            <h2 id="wish-heading">What do you wish for?</h2>
+            <form class="wish-writing" id="wish-form" method="post" target="_blank">
+                <label class="wish-label" for="wish-note">Write your birthday wish</label>
+                <ul class="wish-prompts" id="wish-prompts">
+                    <li>What would make you happiest this year?</li>
+                    <li>Is there something you want to try, learn, or experience?</li>
+                    <li>What is one dream you hope to move closer to?</li>
+                </ul>
+                <textarea class="wish-textarea" id="wish-note" name="wish" maxlength="500" required aria-describedby="wish-prompts collection-notice send-wish-feedback" placeholder="This year, I hope to..."></textarea>
+                
+                <div class="wish-submit">
+                    <button class="wish-button" id="send-wish" type="submit">Submit</button>
+                </div>
+                <p class="wish-writing-note" id="send-wish-feedback" role="status" hidden></p>
+            </form>
+            <div class="candle" aria-hidden="true">
+                <span class="candle-flame"></span>
+            </div>
+            <p>Close your eyes, make a wish, then tap the button to blow out the candle.</p>
+            <button class="wish-button" id="make-wish" type="button">Make a wish ✨</button>
+            <p class="wish-message" id="wish-message" role="status" hidden>Your wish is on its way. Happy birthday! 🎉</p>
+        </section>
+    </main>
+
+    <script>
+        const makeWishButton = document.getElementById("make-wish");
+        const wishMessage = document.getElementById("wish-message");
+        const wishCard = document.querySelector(".wish-card");
+        const wishCelebration = document.getElementById("wish-celebration");
+        const wishForm = document.getElementById("wish-form");
+        const wishNoteInput = document.getElementById("wish-note");
+        const sendWishFeedback = document.getElementById("send-wish-feedback");
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const confettiColors = ["#c9eeff", "#8fd7ff", "#fff2c9", "#5da7e8", "#d6f1ff"];
+        // Paste the deployed Apps Script web app URL here before publishing.
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxWpbeIrQEyBKHQEUfRPLX_HMHokMkkWhr85WAqzNsFBSc48AH-2VkL_-ZyzNciVwrv/exec";
+
+        wishNoteInput.addEventListener("input", () => {
+            wishNoteInput.removeAttribute("aria-invalid");
+            sendWishFeedback.hidden = true;
+        });
+
+        wishForm.addEventListener("submit", (event) => {
+            const wish = wishNoteInput.value.trim();
+            if (!wish) {
+                event.preventDefault();
+                wishNoteInput.setAttribute("aria-invalid", "true");
+                sendWishFeedback.textContent = "Write your wish above before submitting it.";
+                sendWishFeedback.hidden = false;
+                wishNoteInput.focus();
+                return;
+            }
+
+            if (!GOOGLE_APPS_SCRIPT_URL.startsWith("https://script.google.com/macros/s/") || !GOOGLE_APPS_SCRIPT_URL.endsWith("/exec")) {
+                event.preventDefault();
+                sendWishFeedback.textContent = "Wish collection isn’t connected yet. The site owner needs to add the deployed Apps Script URL.";
+                sendWishFeedback.hidden = false;
+                return;
+            }
+
+            wishForm.action = GOOGLE_APPS_SCRIPT_URL;
+        });
+
+        makeWishButton.addEventListener("click", () => {
+            wishCard.classList.add("wish-made");
+            makeWishButton.disabled = true;
+            makeWishButton.textContent = "Wish made!";
+            wishMessage.hidden = false;
+
+            if (reducedMotion) {
+                return;
+            }
+
+            for (let index = 0; index < 32; index += 1) {
+                const piece = document.createElement("span");
+                piece.className = "confetti";
+                piece.style.left = `${Math.random() * 100}%`;
+                piece.style.backgroundColor = confettiColors[index % confettiColors.length];
+                piece.style.setProperty("--drift", `${Math.round(Math.random() * 160 - 80)}px`);
+                piece.style.setProperty("--dur", `${3 + Math.random() * 1.5}s`);
+                piece.style.setProperty("--delay", `${Math.random() * 0.35}s`);
+                wishCelebration.appendChild(piece);
+                window.setTimeout(() => piece.remove(), 5000);
+            }
+        });
+    </script>
+</body>
+</html>
