@@ -69,6 +69,16 @@
         );
     };
 
+    const hideUnavailableMusic = () => {
+        audio.pause();
+        toggle.hidden = true;
+    };
+
+    audio.addEventListener("error", hideUnavailableMusic, { once: true });
+    if (audio.error) {
+        hideUnavailableMusic();
+    }
+
     const rememberPlayback = () => {
         sessionStorage.setItem(timeKey, String(audio.currentTime));
         sessionStorage.setItem(playingKey, String(shouldPlay));
