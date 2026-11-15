@@ -322,6 +322,15 @@
             outline-offset: 3px;
         }
 
+        .music-toggle {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 10;
+            background: rgba(116, 72, 143, 0.96);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
         @keyframes slow-reveal {
             from {
                 opacity: 0;
@@ -470,10 +479,26 @@
 
     <main>
         <div class="tiny-hearts box-hearts" aria-hidden="true">
-            <span style="left: 12%; top: 28%; --drift: -8px; --dur: 7s; --delay: 0s;">❤</span>
-            <span style="left: 38%; top: 72%; --drift: 9px; --dur: 8.5s; --delay: 1.6s;">❤</span>
-            <span style="left: 69%; top: 45%; --drift: -6px; --dur: 7.8s; --delay: 2.9s;">❤</span>
-            <span style="left: 88%; top: 66%; --drift: 10px; --dur: 9s; --delay: 4s;">❤</span>
+            <span style="left: 8%; top: 20%; --drift: -7px; --dur: 7s; --delay: 0s;">❤</span>
+            <span style="left: 18%; top: 42%; --drift: 9px; --dur: 8.2s; --delay: 0.8s;">❤</span>
+            <span style="left: 28%; top: 68%; --drift: -10px; --dur: 8.8s; --delay: 1.6s;">❤</span>
+            <span style="left: 38%; top: 26%; --drift: 12px; --dur: 7.5s; --delay: 2.2s;">❤</span>
+            <span style="left: 48%; top: 52%; --drift: -8px; --dur: 9s; --delay: 2.9s;">❤</span>
+            <span style="left: 58%; top: 32%; --drift: 11px; --dur: 8.4s; --delay: 3.4s;">❤</span>
+            <span style="left: 68%; top: 74%; --drift: -9px; --dur: 9.3s; --delay: 4s;">❤</span>
+            <span style="left: 78%; top: 18%; --drift: 10px; --dur: 7.9s; --delay: 4.7s;">❤</span>
+            <span style="left: 88%; top: 46%; --drift: -7px; --dur: 8.7s; --delay: 5.2s;">❤</span>
+            <span style="left: 94%; top: 64%; --drift: 9px; --dur: 9.5s; --delay: 5.8s;">❤</span>
+            <span style="left: 12%; top: 78%; --drift: -11px; --dur: 8.1s; --delay: 6.4s;">❤</span>
+            <span style="left: 24%; top: 14%; --drift: 12px; --dur: 7.7s; --delay: 6.8s;">❤</span>
+            <span style="left: 36%; top: 82%; --drift: -8px; --dur: 8.9s; --delay: 7.2s;">❤</span>
+            <span style="left: 52%; top: 16%; --drift: 9px; --dur: 7.4s; --delay: 7.8s;">❤</span>
+            <span style="left: 62%; top: 84%; --drift: -9px; --dur: 9.2s; --delay: 8.3s;">❤</span>
+            <span style="left: 72%; top: 48%; --drift: 10px; --dur: 8.5s; --delay: 8.9s;">❤</span>
+            <span style="left: 82%; top: 72%; --drift: -10px; --dur: 9.7s; --delay: 9.5s;">❤</span>
+            <span style="left: 90%; top: 24%; --drift: 11px; --dur: 7.6s; --delay: 10.1s;">❤</span>
+            <span style="left: 4%; top: 56%; --drift: 8px; --dur: 8.8s; --delay: 10.7s;">❤</span>
+            <span style="left: 98%; top: 48%; --drift: -9px; --dur: 9.1s; --delay: 11.2s;">❤</span>
         </div>
         <h1>My Apology</h1>
         <p class="intro-copy">
@@ -546,12 +571,20 @@
             Please know that I'll be here whenever you need me. Just remember that.''''
         </p>
 
-        <div class="actions">
-            <a class="memory-link" href="memories.html">Memories ❤️</a>
-            <a class="memory-link alt" href="birthday-moments.html">Birthday Note ✨</a>
-            <a class="memory-link alt" href="birthday-gallery.html">what you deserve 🌸</a>
-        </div>
     </main>
+
+    <div class="actions" style="margin-top: 18px; justify-content: center;">
+        <a class="memory-link alt" href="birthday-moments.html">Birthday Note ✨</a>
+    </div>
+
+    <audio id="background-audio" loop preload="auto">
+        <source src="Tu Chahiye Bajrangi Bhaijaan 320 Kbps.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <button type="button" class="music-toggle" id="music-toggle" aria-label="Start background music">
+        ▶ Start music
+    </button>
 
     <script>
         const birthdayWish = document.getElementById("birthday-wish");
@@ -567,5 +600,6 @@
             letterLabel.textContent = openingLetter ? "Return to birthday wish" : "Open your letter";
         });
     </script>
+    <script src="music.js"></script>
 </body>
 </html>
