@@ -40,9 +40,9 @@
                 z-index: 10;
                 min-height: 44px;
                 padding: 10px 18px;
-                border: 1px solid rgba(255, 160, 188, 0.8);
+                border: 1px solid rgba(69, 6, 25, 0.8);
                 border-radius: 999px;
-                background: linear-gradient(135deg, #ff7aa8, #d95880, #b5436b);
+                background: linear-gradient(135deg, #74072d, #b92353, #e35486);
                 box-shadow: 0 0 18px rgba(255, 104, 139, 0.35), 0 12px 24px rgba(137, 37, 69, 0.22);
                 color: #fffafd;
                 font: inherit;
@@ -62,10 +62,10 @@
 
     const updateToggle = () => {
         const isPlaying = !audio.paused;
-        toggle.textContent = isPlaying ? "⏸ Pause music" : "▶ Start music";
+        toggle.textContent = isPlaying ? "⏸ Pause " : "▶ Start ";
         toggle.setAttribute(
             "aria-label",
-            isPlaying ? "Pause background music" : "Start background music"
+            isPlaying ? "Pause  music" : "Start  music"
         );
     };
 
